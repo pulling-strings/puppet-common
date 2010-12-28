@@ -5,20 +5,18 @@
 # See LICENSE for the full license granted to you.
 
 # Usage:
-# modules_file { "module/file":
+# common::modules::file { "module/file":
 # 		source => "puppet://..",
 # 		mode   => 644,   # default
 # 		owner  => root,  # default
 #		group  => root,  # default
 # }
-define modules_file (
-		$source,
-		$mode = 0644, $owner = root, $group = root
-	)
-{
+define common::modules::file ($source, $mode = 0644, $owner = root, $group = root) {
 	file {
 		"/var/lib/puppet/modules/${name}":
 			source => $source,
-			mode => $mode, owner => $owner, group => $group;
+			mode   => $mode,
+			owner  => $owner,
+			group  => $group;
 	}
 }

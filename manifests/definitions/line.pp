@@ -3,8 +3,8 @@
 # See LICENSE for the full license granted to you.
 
 # Usage:
-# line { description:
-# 	file => "filename",
+# common::line { description:
+#	file => "filename",
 # 	line => "content",
 # 	ensure => {absent,*present*}
 # }
@@ -14,7 +14,7 @@
 # in /etc/munin/munin-node.conf, and if there are any changes notify the service for
 # a restart
 #
-# line { allow_munin_host:
+# common::line { allow_munin_host:
 #       file => "/etc/munin/munin-node.conf",
 #       line => "allow ^$munin_host$",
 #       ensure => present,
@@ -23,9 +23,11 @@
 # }
 #
 #
-define line($file, $line, $ensure = 'present') {
+define common::line($file, $line, $ensure = 'present') {
 	case $ensure {
-		default : { err ( "unknown ensure value '${ensure}'" ) }
+		default: {
+			err ( "unknown ensure value '${ensure}'" )
+		}
 		present: {
 			exec { "echo '${line}' >> '${file}'":
 				unless => "grep -qFx '${line}' '${file}'"
@@ -38,5 +40,3 @@ define line($file, $line, $ensure = 'present') {
 		}
 	}
 }
-
-

@@ -5,23 +5,23 @@
 # See LICENSE for the full license granted to you.
 
 # Usage:
-# modules_dir { ["common", "common/dir1", "common/dir2" ]: }
-define modules_dir (
-		$mode = 0644, $owner = root, $group = 0
-	)
-{
+# common::modules::dir { ["common", "common/dir1", "common/dir2" ]: }
+define common::modules::dir ($mode = 0644, $owner = root, $group = 0) {
 	$dir = "/var/lib/puppet/modules/${name}"
 	if defined(File[$dir]) {
 		debug("${dir} already defined")
 	} else {
 		file {
 			"/var/lib/puppet/modules/${name}":
-				source => [ "puppet:///${name}/modules_dir", "puppet:///common/empty"],
+				source   => [ "puppet:///${name}/modules_dir", "puppet:///common/empty"],
 				checksum => mtime,
-				# ignore the placeholder
-				ignore => '\.ignore', 
-				recurse => true, purge => true, force => true,
-				mode => $mode, owner => $owner, group => $group;
+				ignore   => '\.ignore', # ignore the placeholder
+				recurse  => true,
+				purge    => true,
+				force    => true,
+				mode     => $mode,
+				owner    => $owner,
+				group    => $group
 		}
 	}
 }

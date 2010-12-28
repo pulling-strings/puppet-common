@@ -33,8 +33,16 @@ class assert_lsbdistcodename {
 			exec { "false # assert_lsbdistcodename": alias => assert_lsbdistcodename }
 		}
 		default: {
-			exec { "true # assert_lsbdistcodename": alias => assert_lsbdistcodename }
-			exec { "true # require_lsbdistcodename": alias => require_lsbdistcodename }
+			exec { "true # assert_lsbdistcodename":
+				alias => assert_lsbdistcodename,
+				logoutput => on_failure,
+				onlyif => 'false'
+			}
+			exec { "true # require_lsbdistcodename":
+				alias => require_lsbdistcodename,
+				logoutput => on_failure,
+				onlyif => 'false'
+			}
 		}
 	}
 
