@@ -15,6 +15,6 @@ file {
 
 import "definitions/*.pp"
 import "definitions/archive/*.pp"
-import "definitions/concantenated/*.pp"
+import "definitions/concatenated/*.pp"
 import "definitions/modules/*.pp"
 import "classes/*.pp"

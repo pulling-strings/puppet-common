@@ -43,7 +43,7 @@ define common::archive::extract ($ensure=present, $target, $src_target="/usr/src
 			$extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
 			$extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
       
-			exec {"$name unpack":
+			exec { "$name unpack":
 				command => $extension ? {
 					'zip'     => "mkdir -p ${target} && ${extract_zip}",
 					'tar.gz'  => "mkdir -p ${target} && ${extract_targz}",
@@ -57,7 +57,7 @@ define common::archive::extract ($ensure=present, $target, $src_target="/usr/src
 			}
 		}
 		absent: {
-			file {"$extract_dir":
+			file { "$extract_dir":
 				ensure  => absent,
 				recurse => true,
 				purge   => true,

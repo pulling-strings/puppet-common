@@ -12,8 +12,7 @@
 #		group  => root,  # default
 # }
 define common::modules::file ($source, $mode = 0644, $owner = root, $group = root) {
-	file {
-		"/var/lib/puppet/modules/${name}":
+	file { "/var/lib/puppet/modules/${name}":
 			source => $source,
 			mode   => $mode,
 			owner  => $owner,
