@@ -21,14 +21,14 @@ Example usage:
 
   common::archive {"apache-tomcat-6.0.26":
     ensure => present,
-    url => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+    url    => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
     target => "/opt",
   }
 
 */
 define common::archive ($ensure=present, $url, $target, $checksum=true, $digest_url='', $digest_string='', $digest_type='md5',
 						$timeout=120, $root_dir='', $extension='tar.gz', $src_target='/usr/src') {
-	common::archive::download {"${name}.${extension}":
+	common::archive::download { "${name}.${extension}":
 		ensure        => $ensure,
 		url           => $url,
 		checksum      => $checksum,
@@ -39,7 +39,7 @@ define common::archive ($ensure=present, $url, $target, $checksum=true, $digest_
 		src_target    => $src_target,
 	}
 
-	common::archive::extract {"${name}":
+	common::archive::extract { "${name}":
 		ensure     => $ensure,
 		target     => $target,
 		src_target => $src_target,
