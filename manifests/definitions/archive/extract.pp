@@ -50,7 +50,7 @@ define common::archive::extract ($ensure=present, $target, $src_target="/usr/src
 					'tgz'     => "mkdir -p ${target} && ${extract_targz}",
 					'tar.bz2' => "mkdir -p ${target} && ${extract_tarbz2}",
 					'tgz2'    => "mkdir -p ${target} && ${extract_tarbz2}",
-					default   => fail ( "Unknown extension value '${extension}'" ),
+					default   => fail ( "Unknown extension value '${extension}'" )
 				},
 				creates => $extract_dir,
 				timeout => $timeout
@@ -61,7 +61,7 @@ define common::archive::extract ($ensure=present, $target, $src_target="/usr/src
 				ensure  => absent,
 				recurse => true,
 				purge   => true,
-				force   => true,
+				force   => true
 			}
 		}
 		default: { err ( "Unknown ensure value: '${ensure}'" ) }

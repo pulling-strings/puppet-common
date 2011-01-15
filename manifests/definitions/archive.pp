@@ -27,16 +27,17 @@ Example usage:
 
 */
 define common::archive ($ensure=present, $url, $target, $checksum=true, $digest_url='', $digest_string='', $digest_type='md5',
-						$timeout=120, $root_dir='', $extension='tar.gz', $src_target='/usr/src') {
+						$timeout=120, $root_dir='', $extension='tar.gz', $src_target='/usr/src', $follow_redirects=false) {
 	common::archive::download { "${name}.${extension}":
-		ensure        => $ensure,
-		url           => $url,
-		checksum      => $checksum,
-		digest_url    => $digest_url,
-		digest_string => $digest_string,
-		digest_type   => $digest_type,
-		timeout       => $timeout,
-		src_target    => $src_target,
+		ensure           => $ensure,
+		url              => $url,
+		checksum         => $checksum,
+		digest_url       => $digest_url,
+		digest_string    => $digest_string,
+		digest_type      => $digest_type,
+		timeout          => $timeout,
+		src_target       => $src_target,
+		follow_redirects => $follow_redirects
 	}
 
 	common::archive::extract { "${name}":

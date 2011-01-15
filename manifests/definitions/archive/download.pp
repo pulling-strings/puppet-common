@@ -27,11 +27,18 @@ Example usage:
   }
    
 */
-define common::archive::download ($ensure=present, $url, $checksum=true, $digest_url="", $digest_string="", $digest_type="md5", $timeout=120, $src_target="/usr/src") {
+define common::archive::download ($ensure=present, $url, $checksum=true, $digest_url="", $digest_string="", $digest_type="md5", $timeout=120, $src_target="/usr/src",
+								  $follow_redirects=false) {
 	if !defined(Package['curl']) {
 		package{'curl':
-			ensure => present,
+			ensure => present
 		}
+	}	
+		
+	if $follow_redirects {
+		$curl_extra_opts = "-L"
+	} else {
+		$curl_extra_opts = ""
 	}
 
 	case $checksum {
@@ -57,7 +64,7 @@ define common::archive::download ($ensure=present, $url, $checksum=true, $digest
 						}
     
 						exec {"download digest of archive $name":
-							command => "curl -o ${src_target}/${name}.${digest_type} ${digest_src}",
+							command => "curl ${curl_extra_opts} -o ${src_target}/${name}.${digest_type} ${digest_src}",
 							creates => "${src_target}/${name}.${digest_type}",
 							timeout => $timeout,
 							notify  => Exec["download archive $name and check sum"],
@@ -102,8 +109,8 @@ define common::archive::download ($ensure=present, $url, $checksum=true, $digest
 			$on_error = "(rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1)"
 			exec {"download archive $name and check sum":
 				command     => $checksum ? {
-					true    => "(curl -o ${src_target}/${name} ${url} && ${checksum_cmd}) || ${on_error}",
-					false   => "curl -o ${src_target}/${name} ${url}",
+					true    => "(curl ${curl_extra_opts} -o ${src_target}/${name} ${url} && ${checksum_cmd}) || ${on_error}",
+					false   => "curl ${curl_extra_opts} -o ${src_target}/${name} ${url}",
 					default => fail ( "Unknown checksum value: '${checksum}'" ),
 				},
 				creates     => "${src_target}/${name}",
