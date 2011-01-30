@@ -19,7 +19,7 @@ define common::concatfilepart ($ensure = present, $file, $content = false, $sour
 		file {$dir:
 			ensure  => directory,
 			mode    => 0600,
-			source  => "puppet:///common/empty/",
+			source  => "puppet:///modules/common/empty/",
 			recurse => $manage,
 			purge   => $manage,
 			force   => $manage,

@@ -12,7 +12,7 @@ define common::modules::dir ($mode = 0644, $owner = root, $group = 0) {
 		debug("${dir} already defined")
 	} else {
 		file { "/var/lib/puppet/modules/${name}":
-				source   => [ "puppet:///${name}/modules_dir", "puppet:///common/empty"],
+				source   => [ "puppet:///modules/${name}/modules_dir", "puppet:///modules/common/empty"],
 				checksum => mtime,
 				ignore   => '\.ignore', # ignore the placeholder
 				recurse  => true,

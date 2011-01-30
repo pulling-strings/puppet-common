@@ -25,7 +25,7 @@ define concatenated_file ($dir = '', $header = '', $footer = '', $mode = 0644, $
 		debug("${dir_real} already defined")
 	} else {
 		file { $dir_real:
-				source   => "puppet://$server/common/empty",
+				source   => "puppet:///modules/common/empty",
 				checksum => mtime,
 				ignore   => '\.ignore',
 				recurse  => true,
