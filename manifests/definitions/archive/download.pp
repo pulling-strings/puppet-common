@@ -45,7 +45,7 @@ define common::archive::download ($ensure=present, $url, $checksum=true, $digest
 		true : {
 			case $digest_type {
 				'md5','sha1','sha224','sha256','sha384','sha512' : { 
-					$checksum_cmd = "cd ${src_target} && ${digest_type}sum -c ${name}.${digest_type}" 
+					$checksum_cmd = "cd ${src_target} && /usr/bin/${digest_type}sum -c ${name}.${digest_type}" 
 				}
 				default: { fail "Unimplemented digest type" }
 			}
@@ -64,7 +64,7 @@ define common::archive::download ($ensure=present, $url, $checksum=true, $digest
 						}
     
 						exec {"download digest of archive $name":
-							command => "curl ${curl_extra_opts} -o ${src_target}/${name}.${digest_type} ${digest_src}",
+							command => "/usr/bin/curl ${curl_extra_opts} -o ${src_target}/${name}.${digest_type} ${digest_src}",
 							creates => "${src_target}/${name}.${digest_type}",
 							timeout => $timeout,
 							notify  => Exec["download archive $name and check sum"],
@@ -109,8 +109,8 @@ define common::archive::download ($ensure=present, $url, $checksum=true, $digest
 			$on_error = "(rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1)"
 			exec {"download archive $name and check sum":
 				command     => $checksum ? {
-					true    => "(curl ${curl_extra_opts} -o ${src_target}/${name} ${url} && ${checksum_cmd}) || ${on_error}",
-					false   => "curl ${curl_extra_opts} -o ${src_target}/${name} ${url}",
+					true    => "/bin/sh -c '(/usr/bin/curl ${curl_extra_opts} -o ${src_target}/${name} ${url} && ${checksum_cmd}) || ${on_error}'",
+					false   => "/usr/bin/curl ${curl_extra_opts} -o ${src_target}/${name} ${url}",
 					default => fail ( "Unknown checksum value: '${checksum}'" ),
 				},
 				creates     => "${src_target}/${name}",
