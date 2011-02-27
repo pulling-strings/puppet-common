@@ -16,6 +16,6 @@ define common::modules::file ($source, $mode = 0644, $owner = root, $group = roo
 			source => $source,
 			mode   => $mode,
 			owner  => $owner,
-			group  => $group;
+			group  => $group
 	}
 }

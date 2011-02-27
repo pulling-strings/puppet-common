@@ -6,7 +6,7 @@
 
 # Usage:
 # common::modules::dir { ["common", "common/dir1", "common/dir2" ]: }
-define common::modules::dir ($mode = 0644, $owner = root, $group = 0) {
+define common::modules::dir ($mode = 0644, $owner = root, $group = root) {
 	$dir = "/var/lib/puppet/modules/${name}"
 	if defined(File[$dir]) {
 		debug("${dir} already defined")
