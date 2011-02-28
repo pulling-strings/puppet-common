@@ -18,7 +18,7 @@
 # 	dir => "/etc/some.conf.d",
 # }
 # Use Exec["concat_$name"] as Semaphor
-define concatenated_file ($dir = '', $header = '', $footer = '', $mode = 0644, $owner = root, $group = 0) {
+define common::concatenated::file ($dir = '', $header = '', $footer = '', $mode = 0644, $owner = root, $group = 0) {
 	$dir_real = $dir ? { '' => "${name}.d", default => $dir }
 
 	if defined(File[$dir_real]) {
