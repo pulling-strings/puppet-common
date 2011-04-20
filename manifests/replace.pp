@@ -4,9 +4,9 @@
 
 # Usage:
 #
-# common::replace { description: 
-#           file => "filename",
-#           pattern => "regexp",
+# common::replace { description:
+#           file        => "filename",
+#           pattern     => "regexp",
 #           replacement => "replacement"
 #
 # Example:
@@ -14,8 +14,8 @@
 # with a new port, but only disturbing the file when needed:
 #
 # common::replace { set_munin_node_port:
-# 	file => "/etc/munin/munin-node.conf",
-# 	pattern => "^port (?!$port)[0-9]*",
+# 	file        => "/etc/munin/munin-node.conf",
+# 	pattern     => "^port (?!$port)[0-9]*",
 # 	replacement => "port $port"
 # }  
 

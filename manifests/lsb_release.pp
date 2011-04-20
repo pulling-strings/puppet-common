@@ -19,7 +19,6 @@ class assert_lsbdistcodename {
 	case $lsbdistcodename {
 		'': {
 			err("Please install lsb_release or set facter_lsbdistcodename in the environment of $fqdn")
-			exec { "false # assert_lsbdistcodename": alias => assert_lsbdistcodename }
 		}
 		'n/a': {
 			case $operatingsystem {
@@ -32,23 +31,9 @@ class assert_lsbdistcodename {
 			}
 			exec { "false # assert_lsbdistcodename": alias => assert_lsbdistcodename }
 		}
-		default: {
-			exec { "true # assert_lsbdistcodename":
-				alias => assert_lsbdistcodename,
-				logoutput => on_failure,
-				onlyif => 'false'
-			}
-			exec { "true # require_lsbdistcodename":
-				alias => require_lsbdistcodename,
-				logoutput => on_failure,
-				onlyif => 'false'
-			}
-		}
 	}
 
 }
 
 # To fail the complete compilation, include this class
-class require_lsbdistcodename inherits assert_lsbdistcodename {
-	exec { "false # require_lsbdistcodename": require => Exec[require_lsbdistcodename], }
-}
+class require_lsbdistcodename inherits assert_lsbdistcodename {}

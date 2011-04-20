@@ -23,7 +23,7 @@
 # }
 #
 #
-define common::line($file, $line, $ensure = 'present') {
+define common::line ($file, $line, $ensure = 'present') {
 	case $ensure {
 		default: {
 			err ( "unknown ensure value '${ensure}'" )
@@ -34,8 +34,9 @@ define common::line($file, $line, $ensure = 'present') {
 			}
 		}
 		absent: {
-			exec { "perl -ni -e 'print if \$_ ne \"${line}\n\";' '${file}'":
-				onlyif => "grep -qFx '${line}' '${file}'"
+			$subst_line = regsubst($line,'(/|\.)','\\\1','G')
+			exec { "/bin/sed -i '/${subst_line}/d' '${file}'":
+				onlyif => "/bin/grep -qFx '${line}' '${file}'"
 			}
 		}
 	}

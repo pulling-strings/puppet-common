@@ -14,7 +14,7 @@
 #
 # common::config_file { "/etc/vservers/${vs_name}/context":
 #              content => "${context}\n",
-#              notify => Exec["vs_restart_${vs_name}"],
+#              notify  => Exec["vs_restart_${vs_name}"],
 #              require => Exec["vs_create_${vs_name}"];
 # }
 #
@@ -23,14 +23,14 @@
 #
 # common::config_file { "/etc/apache2/sites-available/munin-stats":
 #              content => template("apache/munin-stats"),
-#              require => Package["apache2"],
-#              notify => Exec["reload-apache2"]
+#              notify  => Exec["reload-apache2"],
+#              require => Package["apache2"]
 # }
 
 define common::config_file ($content = '', $source = '', $ensure = 'present') {
 	file { $name:
 		ensure   => $ensure,
-		backup   => server, # keep old versions on the server
+		backup   => puppet, # keep old versions on the server
 		mode     => 0644, # default permissions for config files
 		owner    => root,
 		group    => 0,

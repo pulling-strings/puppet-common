@@ -5,16 +5,23 @@
 # See LICENSE for the full license granted to you.
 
 # Usage:
-# common::modules::dir { ["common", "common/dir1", "common/dir2" ]: }
-define common::modules::dir ($mode = 0644, $owner = root, $group = root) {
-	$dir = "/var/lib/puppet/modules/${name}"
+# # include common::moduledir
+# common::module::dir { ["common", "common/dir1", "common/dir2" ]: }
+#
+# You may refer to a file in module_dir by using :
+# file { "${common::moduledir::module_dir_path}/somedir/somefile": }
+#
+define common::module::dir ($mode = 0644, $owner = root, $group = root) {
+	include common::moduledir
+	$dir = "${common::moduledir::module_dir_path}/${name}"
+	
 	if defined(File[$dir]) {
 		debug("${dir} already defined")
 	} else {
-		file { "/var/lib/puppet/modules/${name}":
+		file { $dir:
 				source   => [ "puppet:///modules/${name}/modules_dir", "puppet:///modules/common/empty"],
 				checksum => mtime,
-				ignore   => '\.ignore', # ignore the placeholder
+				ignore   => '.ignore', # ignore the placeholder
 				recurse  => true,
 				purge    => true,
 				force    => true,
