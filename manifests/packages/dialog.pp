@@ -3,6 +3,6 @@
 #
 class common::packages::dialog {
 	package { dialog:
-		ensure => installed
+		ensure => installed,
 	}
 }

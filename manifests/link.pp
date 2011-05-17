@@ -7,7 +7,8 @@
 # e.g. equivalent to bash# ln -s /usr/bin/convert /usr/local/bin/convert
 #
 define common::link ($target = 'absent') {
+
 	file { $name:
-		ensure => $target
+		ensure => $target,
 	}
 }

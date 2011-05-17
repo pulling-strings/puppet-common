@@ -11,8 +11,12 @@
 # You may refer to a file in module_dir by using :
 # file { "${common::moduledir::module_dir_path}/somedir/somefile": }
 #
-define common::module::dir ($mode = 0644, $owner = root, $group = root) {
+define common::module::dir ($owner = 'root',
+														$group = 'root',
+														$mode  = '0644') {
+															
 	include common::moduledir
+	
 	$dir = "${common::moduledir::module_dir_path}/${name}"
 	
 	if defined(File[$dir]) {
@@ -27,7 +31,7 @@ define common::module::dir ($mode = 0644, $owner = root, $group = root) {
 				force    => true,
 				mode     => $mode,
 				owner    => $owner,
-				group    => $group
+				group    => $group,
 		}
 	}
 }

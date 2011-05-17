@@ -26,22 +26,25 @@
 #              notify  => Exec["reload-apache2"],
 #              require => Package["apache2"]
 # }
+#
+define common::config_file ($content = '',
+														$source  = '',
+														$ensure  = 'present') {
 
-define common::config_file ($content = '', $source = '', $ensure = 'present') {
 	file { $name:
 		ensure   => $ensure,
 		backup   => puppet, # keep old versions on the server
-		mode     => 0644, # default permissions for config files
-		owner    => root,
-		group    => 0,
-		checksum => md5 # really detect changes to this file
+		mode     => '0644', # default permissions for config files
+		owner    => 'root',
+		group    => 'root',
+		checksum => md5, # really detect changes to this file
 	}
 
 	case $source {
 		'': { }
 		default: {
 			File[$name] {
-				source => $source
+				source => $source,
 			}
 		}
 	}
@@ -50,7 +53,7 @@ define common::config_file ($content = '', $source = '', $ensure = 'present') {
 		'': { }
 		default: {
 			File[$name] {
-				content => $content
+				content => $content,
 			}
 		}
 	}		

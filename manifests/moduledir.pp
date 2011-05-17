@@ -12,8 +12,8 @@ class common::moduledir {
 		recurse => true,
 		purge   => true,
 		force   => true,
-		owner   => root,
-		group   => 0,
-		mode    => 0755
+		owner   => 'root',
+		group   => 'root',
+		mode    => '0755',
 	}
 }

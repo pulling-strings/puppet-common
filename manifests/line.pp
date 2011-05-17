@@ -22,21 +22,23 @@
 #       require => Package[munin-node],
 # }
 #
-#
-define common::line ($file, $line, $ensure = 'present') {
+define common::line ($file,
+										 $line,
+										 $ensure = 'present') {
+
 	case $ensure {
 		default: {
 			err ( "unknown ensure value '${ensure}'" )
 		}
 		present: {
 			exec { "echo '${line}' >> '${file}'":
-				unless => "grep -qFx '${line}' '${file}'"
+				unless => "grep -qFx '${line}' '${file}'",
 			}
 		}
 		absent: {
 			$subst_line = regsubst($line,'(/|\.)','\\\1','G')
 			exec { "/bin/sed -i '/${subst_line}/d' '${file}'":
-				onlyif => "/bin/grep -qFx '${line}' '${file}'"
+				onlyif => "/bin/grep -qFx '${line}' '${file}'",
 			}
 		}
 	}

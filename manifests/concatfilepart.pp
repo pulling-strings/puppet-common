@@ -1,11 +1,15 @@
 # Inspired by David Schmitt's concatenated_file.pp
+define common::concatfilepart ($file,
+															 $ensure  = present,
+															 $content = false,
+															 $source  = false,
+															 $manage  = false) {
 
-define common::concatfilepart ($ensure = present, $file, $content = false, $source  = false, $manage  = false) {
 	# Resulting file
 	if defined(File[$file]) {
 		debug("${file} already defined")
 	} else {
-		file {$file:
+		file { $file:
 			ensure => present,
 		}
 	}
@@ -16,10 +20,10 @@ define common::concatfilepart ($ensure = present, $file, $content = false, $sour
 	if defined(File[$dir]) {
 		debug("${dir} already defined")
 	} else {
-		file {$dir:
+		file { $dir:
 			ensure  => directory,
 			mode    => 0600,
-			source  => "puppet:///modules/common/empty/",
+			source  => 'puppet:///modules/common/empty/',
 			recurse => $manage,
 			purge   => $manage,
 			force   => $manage,
@@ -29,33 +33,33 @@ define common::concatfilepart ($ensure = present, $file, $content = false, $sour
 
 	if $notify {
 		if $content {
-			file {"${dir}/${name}":
+			file { "${dir}/${name}":
 				ensure  => $ensure,
 				content => $content,
-				mode    => 0600,
-				notify  => [Exec["${file} concatenation"], $notify],
+				mode    => '0600',
+				notify  => [ Exec["${file} concatenation"], $notify ],
 			}
 		} else {
-			file {"${dir}/${name}":
+			file { "${dir}/${name}":
 				ensure => $ensure,
 				source => $source,
-				mode   => 0600,
-				notify => [Exec["${file} concatenation"], $notify],
+				mode   => '0600',
+				notify => [ Exec["${file} concatenation"], $notify ],
 			}
 		}
 	} else {
 		if $content {
-			file {"${dir}/${name}":
+			file { "${dir}/${name}":
 				ensure  => $ensure,
 				content => $content,
-				mode    => 0600,
+				mode    => '0600',
 				notify  => Exec["${file} concatenation"],
 			}
 		} else {
-			file {"${dir}/${name}":
+			file { "${dir}/${name}":
 				ensure  => $ensure,
 				source  => $source,
-				mode    => 0600,
+				mode    => '0600',
 				notify  => Exec["${file} concatenation"],
 			}
 		}

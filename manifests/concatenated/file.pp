@@ -36,14 +36,19 @@
 #
 # Use Exec["concat_$name"] as Semaphor
 #
-define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
-																	 $footer = '', $mode = 0644, $owner = root,
-																	 $group = root) {
+define common::concatenated::file ($ensure = 'present',
+																	 $dir    = '',
+																	 $header = '',
+																	 $footer = '',
+																	 $mode   = '0644',
+																	 $owner  = 'root',
+																	 $group  = 'root') {
+
 	include common::moduledir::common::cf
 	
 	$dir_real = $dir ? {
 		''      => "${name}.d",
-		default => $dir
+		default => $dir,
 	}
 	
 	$tmp_file_name = regsubst($dir_real, '/', '_', 'G')
@@ -57,7 +62,7 @@ define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
 					'present' => directory,
 					default   => $ensure
 				},
-				source   => "puppet:///modules/common/empty",
+				source   => 'puppet:///modules/common/empty',
 				checksum => mtime,
 				ignore   => '.ignore',
 				recurse  => true,
@@ -66,7 +71,7 @@ define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
 				mode     => $mode,
 				owner    => $owner,
 				group    => $group,
-				notify   => Exec["concat_${name}"]
+				notify   => Exec["concat_${name}"],
 		}
 	}
 
@@ -75,7 +80,7 @@ define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
 			checksum => md5,
 			owner    => $owner,
 			group    => $group,
-			mode     => $mode
+			mode     => $mode,
 	}
 	
 	# decouple the actual file from the generation process by using a
@@ -89,7 +94,7 @@ define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
 		owner    => $owner,
 		group    => $group,
 		mode     => $mode,
-		require  => File[$tmp_file]
+		require  => File[$tmp_file],
 	}
 
 	if $ensure == 'present' {
@@ -97,11 +102,11 @@ define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
 		$additional_cmd = $header ? {
 			''      => $footer ? {
 				''      => '',
-				default => "| cat - '${footer}' "
+				default => "| cat - '${footer}' ",
 			},
 			default => $footer ? { 
 				''      => "| cat '${header}' - ",
-				default => "| cat '${header}' - '${footer}' "
+				default => "| cat '${header}' - '${footer}' ",
 			}
 		}
 	
@@ -112,7 +117,7 @@ define common::concatenated::file ($ensure = 'present', $dir = '', $header = '',
 			subscribe   => File[$dir_real],
 			before      => File[$tmp_file],
 			alias       => "concat_${dir_real}",
-			loglevel    => info
+			loglevel    => info,
 		}
 	}
 }

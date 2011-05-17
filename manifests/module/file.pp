@@ -10,8 +10,14 @@
 #   owner  => root,  # default
 #   group  => root     # default
 #	}
-define module_file ($source, $ensure = present, $alias = undef, $mode = 0644,
-										$owner = root, $group = root) {
+#
+define module_file ($source,
+										$ensure = present,
+										$alias  = undef,
+										$owner  = 'root',
+										$group  = 'root',
+										$mode   = '0644') {
+
 	include common::moduledir
 
 	file { "${common::moduledir::module_dir_path}/${name}":
@@ -20,6 +26,6 @@ define module_file ($source, $ensure = present, $alias = undef, $mode = 0644,
 		source => $source,
 		owner  => $owner,
 		group  => $group,
-		mode   => $mode
+		mode   => $mode,
 	}
 }
