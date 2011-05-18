@@ -28,7 +28,7 @@
 define common::archive::download ($url,
 																	$ensure           = present,
 																	$checksum         = true,
-																	$digest_url       = ,
+																	$digest_url       = '',
 																	$digest_string    = '',
 																	$digest_type      = 'md5',
 																	$timeout          = 120,
