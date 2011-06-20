@@ -33,12 +33,14 @@ define common::line ($file,
 		present: {
 			exec { "echo '${line}' >> '${file}'":
 				unless => "grep -qFx '${line}' '${file}'",
+				path	=> ['/bin']
 			}
 		}
 		absent: {
 			$subst_line = regsubst($line,'(/|\.)','\\\1','G')
 			exec { "/bin/sed -i '/${subst_line}/d' '${file}'":
 				onlyif => "/bin/grep -qFx '${line}' '${file}'",
+				path	=> ['/bin']
 			}
 		}
 	}
