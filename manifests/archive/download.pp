@@ -41,7 +41,7 @@ define common::archive::download ($url,
 		}
 	}	
 		
-	if $follow_redirects {
+	if($follow_redirects == true){
 		$curl_extra_opts = '-L'
 	} else {
 		$curl_extra_opts = ''
