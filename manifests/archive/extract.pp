@@ -58,7 +58,7 @@ define common::archive::extract ($target,
 				},
 				creates => $extract_dir,
 				timeout => $timeout,
-				path	=> ["/bin"]
+				path	=> ["/bin","/usr/bin/"]
 
 			}
 		}
